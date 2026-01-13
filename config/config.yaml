@@ -1,0 +1,62 @@
+# QuickChat Notification Service Configuration
+
+server:
+  port: "8080"
+  env: development
+
+loglevel: info
+
+mysql:
+  host: localhost
+  port: "3306"
+  user: quickchat
+  password: quickchat_notification_password
+  database: quickchat_notification
+
+mongodb:
+  uri: mongodb://localhost:27017
+  database: quickchat_notifications
+
+redis:
+  host: localhost
+  port: "6379"
+  password: ""
+  db: 0
+
+kafka:
+  brokers:
+    - localhost:9092
+  topic: notifications
+  consumergroup: notification-service
+
+firebase:
+  credentialsfile: ./config/firebase-credentials.json
+  projectid: quickchat-project
+
+apns:
+  keyfile: ./config/apns-auth-key.p8
+  keyid: YOUR_KEY_ID
+  teamid: YOUR_TEAM_ID
+  bundleid: com.quickchat.app
+  usesandbox: true
+
+email:
+  provider: sendgrid
+  apikey: ""
+  fromemail: noreply@quickchat.com
+  fromname: QuickChat
+  smtphost: ""
+  smtpport: 587
+  smtpuser: ""
+  smtppass: ""
+
+sms:
+  provider: twilio
+  accountsid: ""
+  authtoken: ""
+  fromnumber: ""
+
+worker:
+  poolsize: 10
+  retrycount: 3
+  retrydelay: 60

@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quikapp-notification-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=quikapp_notifications
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - quikapp-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: quikapp-notification-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=quikapp_notifications
+    volumes:
+      - notification-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - quikapp-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: quikapp-notification-redis
+    ports:
+      - "6383:6379"
+    volumes:
+      - notification-redis-data:/data
+    networks:
+      - quikapp-network
+
+volumes:
+  notification-postgres-data:
+  notification-redis-data:
+
+networks:
+  quikapp-network:
+    driver: bridge
