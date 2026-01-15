@@ -17,7 +17,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Notification Service')
-    .setDescription('QuikApp Notification Service API')
+    .setDescription('QuckApp Notification Service API')
     .setVersion('1.0')
     .addTag('notifications')
     .addTag('templates')

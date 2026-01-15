@@ -1,8 +1,8 @@
 {
   "name": "notification-service",
   "version": "1.0.0",
-  "description": "QuikApp Notification Service - Push, Email, SMS, and In-app notifications",
-  "author": "QuikApp Team",
+  "description": "QuckApp Notification Service - Push, Email, SMS, and In-app notifications",
+  "author": "QuckApp Team",
   "private": true,
   "license": "MIT",
   "scripts": {

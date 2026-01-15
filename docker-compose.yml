@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: quikapp-notification-service
+    container_name: quckapp-notification-service
     ports:
       - "3001:3001"
     environment:
@@ -15,7 +15,7 @@ services:
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
-      - DB_NAME=quikapp_notifications
+      - DB_NAME=quckapp_notifications
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     depends_on:
@@ -24,18 +24,18 @@ services:
       redis:
         condition: service_started
     networks:
-      - quikapp-network
+      - quckapp-network
     restart: unless-stopped
 
   postgres:
     image: postgres:16-alpine
-    container_name: quikapp-notification-postgres
+    container_name: quckapp-notification-postgres
     ports:
       - "5433:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=quikapp_notifications
+      - POSTGRES_DB=quckapp_notifications
     volumes:
       - notification-postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -44,22 +44,22 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - quikapp-network
+      - quckapp-network
 
   redis:
     image: redis:7-alpine
-    container_name: quikapp-notification-redis
+    container_name: quckapp-notification-redis
     ports:
       - "6383:6379"
     volumes:
       - notification-redis-data:/data
     networks:
-      - quikapp-network
+      - quckapp-network
 
 volumes:
   notification-postgres-data:
   notification-redis-data:
 
 networks:
-  quikapp-network:
+  quckapp-network:
     driver: bridge
