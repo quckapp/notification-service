@@ -34,16 +34,16 @@ export class DeviceToken {
   token: string;
 
   @Column({ length: 255, nullable: true })
-  deviceName: string;
+  deviceName?: string;
 
   @Column({ length: 50, nullable: true })
-  deviceModel: string;
+  deviceModel?: string;
 
   @Column({ length: 20, nullable: true })
-  osVersion: string;
+  osVersion?: string;
 
   @Column({ length: 20, nullable: true })
-  appVersion: string;
+  appVersion?: string;
 
   @Column({ default: true })
   isActive: boolean;

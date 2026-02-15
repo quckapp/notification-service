@@ -25,7 +25,7 @@ export class NotificationController {
   @Post()
   @ApiOperation({ summary: 'Send a notification' })
   @ApiResponse({ status: 201, type: NotificationResponseDto })
-  async send(@Body() dto: SendNotificationDto): Promise<NotificationResponseDto> {
+  async send(@Body() dto: SendNotificationDto): Promise<NotificationResponseDto | null> {
     return this.notificationService.send(dto);
   }
 
@@ -81,5 +81,41 @@ export class NotificationController {
   ): Promise<{ success: boolean }> {
     await this.notificationService.markAllAsRead(userId, workspaceId);
     return { success: true };
+  }
+
+  @Get('stats')
+  @ApiOperation({ summary: 'Get notification statistics' })
+  async getStats(
+    @Query('workspaceId') workspaceId?: string,
+  ): Promise<{
+    total: number;
+    sent: number;
+    delivered: number;
+    failed: number;
+    read: number;
+    pending: number;
+  }> {
+    return this.notificationService.getStats(workspaceId);
+  }
+
+  @Get('failed')
+  @ApiOperation({ summary: 'Get failed notifications' })
+  async getFailedNotifications(
+    @Query('limit') limit?: number,
+  ): Promise<{ notifications: any[]; count: number }> {
+    const notifications = await this.notificationService.getFailedNotifications(limit || 50);
+    return { notifications, count: notifications.length };
+  }
+
+  @Post(':id/retry')
+  @ApiOperation({ summary: 'Retry a failed notification' })
+  async retryNotification(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<{ success: boolean; message: string }> {
+    const result = await this.notificationService.retryNotification(id);
+    return {
+      success: result,
+      message: result ? 'Notification queued for retry' : 'Notification not found or not in failed state',
+    };
   }
 }

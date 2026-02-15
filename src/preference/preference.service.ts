@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, IsNull } from 'typeorm';
 import { NotificationPreference } from './entities/preference.entity';
 import { NotificationType } from '../notification/entities/notification.entity';
 
@@ -38,7 +38,7 @@ export class PreferenceService {
     workspaceId?: string,
   ): Promise<NotificationPreference> {
     let preference = await this.preferenceRepo.findOne({
-      where: { userId, workspaceId: workspaceId || null },
+      where: { userId, workspaceId: workspaceId || IsNull() },
     });
 
     if (!preference) {
@@ -58,13 +58,13 @@ export class PreferenceService {
     dto: UpdatePreferenceDto,
   ): Promise<NotificationPreference> {
     let preference = await this.preferenceRepo.findOne({
-      where: { userId, workspaceId },
+      where: { userId, workspaceId: workspaceId || IsNull() },
     });
 
     if (!preference) {
       preference = this.preferenceRepo.create({
         userId,
-        workspaceId,
+        workspaceId: workspaceId || undefined,
         ...dto,
       });
     } else {

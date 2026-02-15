@@ -7,6 +7,7 @@ import { NotificationModule } from './notification/notification.module';
 import { TemplateModule } from './template/template.module';
 import { DeviceModule } from './device/device.module';
 import { PreferenceModule } from './preference/preference.module';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PreferenceModule } from './preference/preference.module';
       inject: [ConfigService],
     }),
     ScheduleModule.forRoot(),
+    ProvidersModule,
     NotificationModule,
     TemplateModule,
     DeviceModule,
